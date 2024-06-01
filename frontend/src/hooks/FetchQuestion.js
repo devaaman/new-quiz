@@ -9,6 +9,7 @@ import * as Action from '../redux/question_reducer'
 
 /** fetch question hook to fetch api data and set value to store */
 export const useFetchQestion = () => {
+    const REACT_APP_SERVER_HOSTNAME = "https://new-quiz-vjc5.onrender.com";
     const dispatch = useDispatch();   
     const [getData, setGetData] = useState({ isLoading : false, apiData : [], serverError: null});
 
@@ -18,7 +19,7 @@ export const useFetchQestion = () => {
         /** async function fetch backend data */
         (async () => {
             try {
-                const [{ questions, answers }] = await getServerData(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/questions`, (data) => data)
+                const [{ questions, answers }] = await getServerData(`${REACT_APP_SERVER_HOSTNAME}/api/questions`, (data) => data)
                 
                 if(questions.length > 0){
                     setGetData(prev => ({...prev, isLoading : false}));

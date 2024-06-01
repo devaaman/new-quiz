@@ -20,11 +20,12 @@ export const updateResult = (index) => async (dispatch) => {
  
  */
 export const usePublishResult = (resultData) => {
+    const REACT_APP_SERVER_HOSTNAME = "https://new-quiz-vjc5.onrender.com"
     const { result, username } = resultData;
     (async () => {
         try {
             if(result !== 0 && !username) throw new Error("Couldn't get Result");
-            await postServerData(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/result`, resultData, data => data)
+            await postServerData(`${REACT_APP_SERVER_HOSTNAME}/api/result`, resultData, data => data)
         } catch (error) {
             console.log(error)
         }

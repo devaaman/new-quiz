@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { getServerData } from '../helper/helper'
 
 export default function ResultTable() {
-
+    const REACT_APP_SERVER_HOSTNAME = "https://new-quiz-vjc5.onrender.com"
     const [data, setData] = useState([])
 
     useEffect(() => {
-        getServerData(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/result`, (res) => {
+        getServerData(`${REACT_APP_SERVER_HOSTNAME}/api/result`, (res) => {
             setData(res)
         })
     })
