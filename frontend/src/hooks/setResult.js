@@ -1,5 +1,7 @@
 import { postServerData } from '../helper/helper'
 import * as Action from '../redux/result_reducer'
+import { useEffect ,useRef} from 'react';
+
 
 export const PushAnswer = (result) => async (dispatch) => {
     try {
@@ -19,15 +21,28 @@ export const updateResult = (index) => async (dispatch) => {
 /** insert user data in db
  
  */
+
+const REACT_APP_SERVER_HOSTNAME = "https://new-quiz-vjc5.onrender.com";
+
 export const usePublishResult = (resultData) => {
-    const REACT_APP_SERVER_HOSTNAME = "https://new-quiz-vjc5.onrender.com"
     const { result, username } = resultData;
-    (async () => {
-        try {
-            if(result !== 0 && !username) throw new Error("Couldn't get Result");
-            await postServerData(`${REACT_APP_SERVER_HOSTNAME}/api/result`, resultData, data => data)
-        } catch (error) {
-            console.log(error)
+    const hasPublished = useRef(false); // Ref to track if the API call has been made
+
+    useEffect(() => {
+        const publishResult = async () => {
+            try {
+                if (result !== 0 && !username) throw new Error("Couldn't get Result");
+                await postServerData(`${REACT_APP_SERVER_HOSTNAME}/api/result`, resultData, data => data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (!hasPublished.current && result && username) {
+            hasPublished.current = true; // Set the ref to true to indicate the API call has been made
+            publishResult();
         }
-    })();
-}          
+    }, [resultData, result, username]);
+};
+
+       
